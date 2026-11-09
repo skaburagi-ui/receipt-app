@@ -27,7 +27,7 @@ describe('seal', () => {
     await loadSealFont();
   });
 
-  it('auto の選択：2字→v1x2、3〜4字→v2x2、5〜6字→v2x3、7〜9字→v3x3', () => {
+  it('auto の選択：2字→v1x2、3〜4字→v2x2、5〜6字→v2x3、7〜9字→v3x3、10〜12字→v3x4', () => {
     expect(resolveSealLayout(spec({ text: '山田' })).layout).toBe('v1x2');
     expect(resolveSealLayout(spec({ text: '山田商' })).layout).toBe('v2x2');
     expect(resolveSealLayout(spec({ text: '株式会社' })).layout).toBe('v2x2');
@@ -35,13 +35,15 @@ describe('seal', () => {
     expect(resolveSealLayout(spec({ text: '山田商店会社' })).layout).toBe('v2x3');
     expect(resolveSealLayout(spec({ text: '株式会社山田商店' })).layout).toBe('v3x3');
     expect(resolveSealLayout(spec({ text: '一二三四五六七八九' })).layout).toBe('v3x3');
+    expect(resolveSealLayout(spec({ text: '一二三四五六七八九十甲乙' })).layout).toBe('v3x4');
   });
 
-  it('明示レイアウトは最小サイズ扱い。収まらなければ拡大、10字以上は先頭9字', () => {
+  it('明示レイアウトは最小サイズ扱い。収まらなければ拡大、13字以上は先頭12字', () => {
     expect(resolveSealLayout(spec({ text: '山田', layout: 'v2x2' })).layout).toBe('v2x2');
     expect(resolveSealLayout(spec({ text: '山田商店会', layout: 'v1x2' })).layout).toBe('v2x3');
-    const r = resolveSealLayout(spec({ text: '一二三四五六七八九十', layout: 'auto' }));
-    expect(r.chars).toHaveLength(9);
+    expect(resolveSealLayout(spec({ text: '一二三四五六七八九十', layout: 'v3x3' })).layout).toBe('v3x4');
+    const r = resolveSealLayout(spec({ text: '一二三四五六七八九十甲乙丙', layout: 'auto' }));
+    expect(r.chars).toHaveLength(12);
     expect(r.dropped).toBe(1);
   });
 
@@ -54,6 +56,7 @@ describe('seal', () => {
     ['4字', '株式会社', 'v2x2'],
     ['6字', '山田商店会社', 'v2x3'],
     ['9字', '山田太郎商店本店東', 'v3x3'],
+    ['12字', '山田太郎商店本店東京都新', 'v3x4'],
   ] as const) {
     for (const frame of ['single', 'double', 'none'] as const) {
       for (const roundedFrame of [false, true]) {

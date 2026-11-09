@@ -148,9 +148,9 @@ export type PrintFormat = 'a4-single' | 'a5-single' | 'a4-double' | 'a4-with-cop
 
 /** 角印アプリ内作成の指定 */
 export interface SealSpec {
-  /** 2〜6文字程度。 */
+  /** 最大12文字。 */
   text: string;
-  layout: 'v1x2' | 'v2x2' | 'v2x3' | 'v3x3' | 'auto';
+  layout: 'v1x2' | 'v2x2' | 'v2x3' | 'v3x3' | 'v3x4' | 'auto';
   color: string; // 例 '#C8161D'
   frame: 'single' | 'double' | 'none';
   roundedFrame: boolean;

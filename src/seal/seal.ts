@@ -110,23 +110,24 @@ const GRIDS: { layout: ConcreteLayout; cols: number; rows: number }[] = [
   { layout: 'v2x2', cols: 2, rows: 2 },
   { layout: 'v2x3', cols: 2, rows: 3 },
   { layout: 'v3x3', cols: 3, rows: 3 },
+  { layout: 'v3x4', cols: 3, rows: 4 },
 ];
-const MAX_CHARS = 9;
+const MAX_CHARS = 12;
 
 export interface ResolvedSealLayout {
   layout: ConcreteLayout;
   /** 列数・行数（縦書きの列＝右から左へ、各列は上から下へ）。 */
   cols: number;
   rows: number;
-  /** 実際に配置する文字（空白除去後、最大9文字）。 */
+  /** 実際に配置する文字（空白除去後、最大12文字）。 */
   chars: string[];
-  /** 9文字を超えて配置しなかった文字数。 */
+  /** 12文字を超えて配置しなかった文字数。 */
   dropped: number;
 }
 
 /**
  * 文字列と指定レイアウトから、実際に使う格子を決める。
- * - `auto`：2字→v1x2、3〜4字→v2x2、5〜6字→v2x3、7〜9字→v3x3（1字は1×1、10字以上は先頭9字）。
+ * - `auto`：2字→v1x2、3〜4字→v2x2、5〜6字→v2x3、7〜9字→v3x3、10〜12字→v3x4（1字は1×1）。
  * - 明示指定：指定は「最小サイズ」として扱い、文字数が収まらなければ収まる最小の格子へ自動で拡大する。
  * - 空白（半角・全角・改行）は無視する。
  */

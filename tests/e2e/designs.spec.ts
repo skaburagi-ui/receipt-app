@@ -49,14 +49,15 @@ test('デザイン3種×印刷形式4種（角印・ロゴ・印紙欄つき）'
   expect(probe.externalRequests).toEqual([]);
 });
 
-test('角印：アプリ内作成「山田」と画像アップロード（PNG透過）', async ({ page }) => {
+test('角印：アプリ内作成12字と画像アップロード（PNG透過）', async ({ page }) => {
   const probe = await attachProbe(page);
   await page.goto('/');
   await fillBasic(page);
   await openAdvanced(page);
   await page.getByLabel('角印（会社印・店の印）を領収書に表示する').check();
-  await page.getByLabel('角印の文字（2〜6字くらい）').fill('山田');
+  await page.getByLabel('角印の文字（最大12字）').fill('山田太郎商店本店東京都新');
   await expect(page.locator('.seal-preview svg')).toBeVisible();
+  await expect(page.locator('.seal-preview svg path[fill]:not([fill="none"])')).toHaveCount(12);
   const a = inspectPdf(await savePdf(page, 'seal-yamada.pdf'));
   expect(a.pages).toBe(1);
   await page.getByLabel('画像をアップロード').check();

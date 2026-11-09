@@ -1,7 +1,7 @@
 import { useId, useRef, useState, type Dispatch } from 'react';
 import type { DesignSettings, SealSpec } from '../../domain/types';
 import { processUploadedImage } from '../../image/process';
-import { findUnsupportedChars, sealToSvg } from '../../seal/seal';
+import { findUnsupportedChars, resolveSealLayout, sealToSvg } from '../../seal/seal';
 import { createDefaultSealSpec } from '../defaults';
 import { sanitizeSvg, attempt, attemptAsync } from '../safe';
 import type { Action } from '../state';
@@ -15,6 +15,7 @@ const LAYOUTS: { value: SealSpec['layout']; label: string }[] = [
   { value: 'v2x2', label: '2列×2行（4字）' },
   { value: 'v2x3', label: '2列×3行（6字）' },
   { value: 'v3x3', label: '3列×3行' },
+  { value: 'v3x4', label: '3列×4行（12字）' },
 ];
 const FRAMES: { value: SealSpec['frame']; label: string }[] = [
   { value: 'single', label: '一重の枠' },
@@ -60,6 +61,7 @@ export function SealEditor({ design, dispatch }: { design: DesignSettings; dispa
   };
 
   const unsupported = spec && spec.text ? attempt(() => findUnsupportedChars(spec.text)) : null;
+  const dropped = spec ? resolveSealLayout(spec).dropped : 0;
   const preview = spec && spec.text ? attempt(() => sanitizeSvg(sealToSvg(spec, 96))) : null;
   const setSpec = (p: Partial<SealSpec>) => patch({ sealSpec: { ...(spec ?? createDefaultSealSpec('')), ...p } });
 
@@ -115,12 +117,13 @@ export function SealEditor({ design, dispatch }: { design: DesignSettings; dispa
           ) : (
             <div className="seal-make">
               <TextField
-                label="角印の文字（2〜6字くらい）"
+                label="角印の文字（最大12字）"
                 value={spec?.text ?? ''}
                 onChange={(v) => setSpec({ text: v })}
                 maxLength={12}
                 placeholder="例：山田商店"
               />
+              {dropped > 0 ? <p className="issue issue-error" role="alert">空白を除いて12字までです。末尾の{dropped}字は印影に入りません。</p> : null}
               {unsupported && unsupported.ok && unsupported.value.length > 0 ? (
                 <p className="issue issue-warning" role="alert"><span className="issue-tag">注意</span><span>この文字は印影に使えません（四角く表示されます）：{unsupported.value.join(' ')}</span></p>
               ) : null}

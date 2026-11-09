@@ -170,7 +170,7 @@ function sealSpec(v: unknown, path: string): SealSpec {
   const o = rec(v, path);
   return {
     text: str(o.text, `${path}.text`, 20),
-    layout: oneOf(o.layout, `${path}.layout`, ['v1x2', 'v2x2', 'v2x3', 'v3x3', 'auto'] as const),
+    layout: oneOf(o.layout, `${path}.layout`, ['v1x2', 'v2x2', 'v2x3', 'v3x3', 'v3x4', 'auto'] as const),
     color: color(o.color, `${path}.color`),
     frame: oneOf(o.frame, `${path}.frame`, ['single', 'double', 'none'] as const),
     roundedFrame: bool(o.roundedFrame, `${path}.roundedFrame`),
