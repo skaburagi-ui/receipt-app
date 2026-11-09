@@ -6,6 +6,7 @@ import { attemptAsync } from '../safe';
 import type { Action } from '../state';
 import { Check, RadioGroup, Section, TextField } from './common';
 import { SealEditor, Slider } from './SealEditor';
+import { SettingsGroup } from './SettingsGroup';
 
 export function FormatRadio({ design, dispatch, name = 'format' }: { design: DesignSettings; dispatch: Dispatch<Action>; name?: string }) {
   return (
@@ -62,7 +63,7 @@ export function DesignPanel({ receipt, design, dispatch }: { receipt: ReceiptInp
   const patch = (p: Partial<DesignSettings>) => dispatch({ type: 'patchDesign', patch: p });
   return (
     <>
-      <Section title="デザイン">
+      <SettingsGroup title="デザイン・色"><Section title="デザイン">
         <RadioGroup<DesignId>
           inline
           legend="デザイン"
@@ -93,9 +94,9 @@ export function DesignPanel({ receipt, design, dispatch }: { receipt: ReceiptInp
             </label>
           </div>
         </fieldset>
-      </Section>
+      </Section></SettingsGroup>
 
-      <Section title="印刷の形式">
+      <SettingsGroup title="印刷の形式"><Section title="印刷の形式">
         <FormatRadio design={design} dispatch={dispatch} name="format-adv" />
         <Check
           label="切り取り用のガイド線を表示する"
@@ -117,15 +118,15 @@ export function DesignPanel({ receipt, design, dispatch }: { receipt: ReceiptInp
             <TextField label="管理用の備考" value={receipt.copyInfo.internalNote} onChange={(v) => dispatch({ type: 'patchCopyInfo', patch: { internalNote: v } })} />
           </div>
         ) : null}
-      </Section>
+      </Section></SettingsGroup>
 
-      <Section title="ロゴ">
+      <SettingsGroup title="ロゴ"><Section title="ロゴ">
         <LogoEditor design={design} dispatch={dispatch} />
-      </Section>
+      </Section></SettingsGroup>
 
-      <Section title="角印">
+      <SettingsGroup title="角印"><Section title="角印">
         <SealEditor design={design} dispatch={dispatch} />
-      </Section>
+      </Section></SettingsGroup>
     </>
   );
 }

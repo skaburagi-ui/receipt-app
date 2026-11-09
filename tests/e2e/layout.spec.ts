@@ -142,6 +142,19 @@ test('PC幅 1280×800：2カラム・プレビュー・横スクロール', asyn
   expect(await cspViolations(page, probe)).toEqual([]);
 });
 
+test('詳細設定は短い一覧から必要な項目だけ開ける', async ({ page }) => {
+  await page.goto('/');
+  const advanced = page.locator('details.advanced');
+  await advanced.locator(':scope > summary').click();
+  const groups = advanced.locator('details.settings-group');
+  await expect(groups).toHaveCount(9);
+  expect(await groups.evaluateAll((items) => items.every((el) => !(el as HTMLDetailsElement).open))).toBe(true);
+  await shot(page, 'settings-collapsed.png');
+  await groups.filter({ has: page.locator('summary', { hasText: '角印' }) }).locator('summary').click();
+  await expect(page.getByLabel('角印（会社印・店の印）を領収書に表示する')).toBeVisible();
+  expect(await groups.filter({ has: page.locator('summary', { hasText: '角印' }) }).evaluate((el) => (el as HTMLDetailsElement).open)).toBe(true);
+});
+
 test('フォント：プレビューが ReceiptSans/ReceiptSerif（woff2）／未収録文字の警告', async ({ page }) => {
   const probe = await attachProbe(page);
   await page.setViewportSize({ width: 1280, height: 800 });

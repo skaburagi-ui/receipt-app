@@ -24,7 +24,7 @@ test('デザイン3種×印刷形式4種（角印・ロゴ・印紙欄つき）'
   await expect(page.getByAltText('ロゴ')).toBeVisible();
   // 角印（アプリ内作成）
   await page.getByLabel('角印（会社印・店の印）を領収書に表示する').check();
-  await page.getByLabel('角印の文字（2〜6字くらい）').fill('株式会社山田商店');
+  await page.getByLabel('角印の文字（最大12字）').fill('株式会社山田商店');
   await expect(page.locator('.seal-preview svg')).toBeVisible();
   for (const d of DESIGNS) {
     await page.getByLabel(d).first().check();

@@ -88,7 +88,9 @@ export const allText = (i: PdfInfo) => i.sizes.map((s) => s.text).join('\n');
 /** 詳細設定（<details>）を開く。 */
 export async function openAdvanced(page: Page) {
   const d = page.locator('details.advanced');
-  if (!(await d.evaluate((e) => (e as HTMLDetailsElement).open))) await d.locator('summary').click();
+  if (!(await d.evaluate((e) => (e as HTMLDetailsElement).open))) await d.locator(':scope > summary').click();
+  // 既存の業務フローテストは個別の設定欄を操作するため、対象グループを展開する。
+  await d.locator('details.settings-group').evaluateAll((groups) => groups.forEach((el) => { (el as HTMLDetailsElement).open = true; }));
 }
 
 export async function setMode(page: Page, mode: 'general' | 'qualified' | 'simple') {
