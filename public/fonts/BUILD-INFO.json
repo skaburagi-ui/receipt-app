@@ -1,0 +1,46 @@
+{
+  "generator": "scripts/build-fonts.py",
+  "googleFontsCommit": "fbe81817505e8aeadc53cc7a38a2b76fb57c333e",
+  "fonttools": "4.68.0",
+  "requestedCodepoints": 7578,
+  "files": {
+    "NotoSansJP-Regular.subset.ttf": {
+      "bytes": 2434360,
+      "cmapEntries": 7576
+    },
+    "NotoSansJP-Regular.subset.woff2": {
+      "bytes": 1047192
+    },
+    "NotoSansJP-Bold.subset.ttf": {
+      "bytes": 2433520,
+      "cmapEntries": 7576
+    },
+    "NotoSansJP-Bold.subset.woff2": {
+      "bytes": 1070260
+    },
+    "NotoSerifJP-Regular.subset.ttf": {
+      "bytes": 3433472,
+      "cmapEntries": 7576
+    },
+    "NotoSerifJP-Regular.subset.woff2": {
+      "bytes": 1402248
+    },
+    "NotoSerifJP-Bold.subset.ttf": {
+      "bytes": 3430952,
+      "cmapEntries": 7576
+    },
+    "NotoSerifJP-Bold.subset.woff2": {
+      "bytes": 1443232
+    }
+  },
+  "sources": {
+    "NotoSansJP": {
+      "url": "https://github.com/google/fonts/blob/fbe81817505e8aeadc53cc7a38a2b76fb57c333e/ofl/notosansjp/NotoSansJP[wght].ttf",
+      "sha256": "c2f3b4d463500a2ddcd3849cded1fceeb9fd6d1c32e6cbecd568453ba50fc68f"
+    },
+    "NotoSerifJP": {
+      "url": "https://github.com/google/fonts/blob/fbe81817505e8aeadc53cc7a38a2b76fb57c333e/ofl/notoserifjp/NotoSerifJP[wght].ttf",
+      "sha256": "2fd527ba12b6a44ec30d796d633360da0aeba6c5d4af1304ce12bb4dc15a7dfc"
+    }
+  }
+}

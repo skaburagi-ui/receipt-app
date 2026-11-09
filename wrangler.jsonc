@@ -1,0 +1,6 @@
+{
+  // Phase 1: 静的配信のみ（Workerコードなし）。デプロイは人間の承認後に行う。
+  "name": "receipt-app",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./dist", "not_found_handling": "single-page-application" }
+}
