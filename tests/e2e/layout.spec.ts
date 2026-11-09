@@ -122,6 +122,10 @@ test('PC幅 1280×800：2カラム・プレビュー・横スクロール', asyn
   await page.waitForTimeout(500);
   await expect(page.locator('#pane-input')).toBeVisible();
   await expect(page.locator('#pane-preview')).toBeVisible();
+  await expect(page.locator('#pane-preview').getByLabel('印刷の形式')).toBeVisible();
+  await expect(page.locator('#pane-preview').getByRole('button', { name: '拡大して確認' })).toBeVisible();
+  const previewFits = await page.locator('#pane-preview').evaluate((el) => el.scrollHeight <= el.clientHeight + 2);
+  expect(previewFits, '通常表示ではプレビュー欄に縦スクロールが不要').toBe(true);
   console.log('pc scroll', await noHScroll(page));
   await shot(page, 'pc-top.png');
   await shot(page, 'pc-full.png', true);

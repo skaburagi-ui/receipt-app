@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Dispatch } from 'react';
 import type { DesignSettings } from '../../domain/types';
 import type { PreviewState } from '../hooks';
@@ -30,10 +31,23 @@ export function Preview({
   state, missingGlyphs, design, dispatch,
 }: { state: PreviewState; missingGlyphs: string[]; design: DesignSettings; dispatch: Dispatch<Action> }) {
   const format = FORMAT_INFO.find((f) => f.id === design.format);
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="preview" aria-label="領収書のプレビュー">
+      <div className="preview-controls">
+        <SelectField<PrintFormat>
+          label="印刷の形式"
+          value={design.format}
+          onChange={(v) => dispatch({ type: 'patchDesign', patch: { format: v } })}
+          options={FORMAT_INFO.map((f) => ({ value: f.id, label: f.label }))}
+        />
+        <button type="button" className="btn" aria-pressed={expanded} onClick={() => setExpanded((v) => !v)}>
+          {expanded ? '全体を表示' : '拡大して確認'}
+        </button>
+      </div>
+      {format ? <p className="hint preview-format-hint">{format.desc}</p> : null}
       <RenderWarnings state={state} missingGlyphs={missingGlyphs} className="preview-banners" />
-      <div className="preview-sheet">
+      <div className={`preview-sheet${expanded ? ' preview-expanded' : ''}`}>
         {state.status === 'ok' ? (
           <div
             className="receipt-svg"
@@ -47,13 +61,6 @@ export function Preview({
         )}
       </div>
       {state.status === 'ok' && state.pageCount > 1 ? <p className="hint">1ページ目を表示しています（全{state.pageCount}ページ）。</p> : null}
-      <SelectField<PrintFormat>
-        label="印刷の形式"
-        value={design.format}
-        onChange={(v) => dispatch({ type: 'patchDesign', patch: { format: v } })}
-        options={FORMAT_INFO.map((f) => ({ value: f.id, label: f.label }))}
-        hint={format?.desc}
-      />
     </div>
   );
 }
